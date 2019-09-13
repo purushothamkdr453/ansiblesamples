@@ -1,0 +1,9 @@
+---
+- hosts: appservers
+  tasks:
+  - name: fetching the file from node-1 to ansible controller machine
+    fetch: src=/home/ssm-user/node1-to-node2.jar dest=buffer/ flat=yes
+    run_once: yes
+  - name: copying the file from ansible controller machie to node-2
+    copy: src=buffer/node1-to-node2.jar dest=/home/ssm-user/
+    when: "{{ inventory_hostname == 'node2'}}"

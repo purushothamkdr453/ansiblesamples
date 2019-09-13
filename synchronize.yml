@@ -1,0 +1,11 @@
+---
+- hosts: appservers
+  tasks:
+  - name: file synchronization(push)
+    synchronize: src=/home/ssm-user/synchronize/ dest=/home/ssm-user/{{inventory_hostname}}-synchronize/ mode=push
+  
+  - name: file synchronization(pull)
+    synchronize: src=/home/ssm-user/{{inventory_hostname}}-synchronize/ dest=/home/ssm-user/synchronize/ mode=pull 
+
+  - name: debug to print the node name
+    debug: var=inventory_hostname

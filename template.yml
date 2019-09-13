@@ -1,0 +1,7 @@
+---
+- hosts: appservers
+  vars:
+    fruits: [ 'Mango','Apple','Orange','Lemon' ]
+  tasks:
+  - name: copying sample template configuration
+    template: src=example.j2 dest=/home/ssm-user/{{inventory_hostname}}-configuration.conf

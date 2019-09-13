@@ -1,0 +1,16 @@
+---
+- hosts: appservers
+  tasks:
+  - name: checking whether the file exists or not
+    stat: path=/home/ssm-user/node1-synchronize/hello-3.txt
+    register: op
+  
+  - debug: msg="file exists"
+    when: op.stat.exists == true
+  
+  - name: checking whether directory exists or not
+    stat: path=/home/ssm-user/node1-synchronize/
+    register: dircheck
+
+  - debug: msg="dir exists"
+    when: dircheck.stat.isdir is defined and dircheck.stat.isdir

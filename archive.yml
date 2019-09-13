@@ -1,0 +1,11 @@
+---
+- hosts: appservers
+  tasks:
+  - name: archiving directories-1
+    archive: path=/home/ssm-user/node1-synchronize dest=/home/ssm-user/node1-synchronize.tgz
+  
+  - name: archiving files-2
+    archive: path=/home/ssm-user/node1-synchronize/hello2.txt remove=yes
+
+  - name: using zip as compression format
+    archive: path=/home/ssm-user/node1-synchronize/hello1.txt format=zip
