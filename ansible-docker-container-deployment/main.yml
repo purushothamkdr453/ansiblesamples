@@ -1,0 +1,45 @@
+---
+- hosts: all 
+  remote_user: ec2-user
+  become: yes
+  become_method: sudo
+   
+  tasks:
+  - name: installing python-pip & docker-py
+    yum: name=python-pip state=present
+
+  - name: installing docker-py
+    pip: name=docker-py
+
+  - name: copying the docker file
+    copy: src=/var/docker-project/ansiblesamples/ansible-docker-container-deployment/{{item}} dest=/home/ec2-user/ mode=0777
+    with_items:
+            - dockerfile
+
+  - name: create directory
+    file: dest=/home/ec2-user/webpage/ state=directory mode=0777
+
+  - name: copying the file
+    copy: src=/var/docker-project/ansiblesamples/ansible-docker-container-deployment/index.html dest=/home/ec2-user/webpage/ 
+
+  - name: creating docker image  
+    docker_image:
+        name: web
+        tag: 1
+        build:
+          path: /home/ec2-user/ 
+        state: build
+
+  - name: running containers
+    docker_container:
+        name: mycontainer
+        image: web:1
+        volumes: 
+                - "/home/ec2-user/webpage/:/usr/share/nginx/html/"
+        ports:
+                - "8080:80"
+        state: started 
+
+  - name: checking docker process
+    shell: docker ps
+

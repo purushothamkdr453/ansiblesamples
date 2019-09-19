@@ -1,0 +1,7 @@
+FROM nginx:latest
+MAINTAINER name Purushotham
+RUN apt-get update -y \
+    && apt-get install -y nginx \
+    && service nginx start
+RUN echo 'Default page. Nginx is in your container. ' > /usr/share/nginx/html/index.html
+EXPOSE 80 
